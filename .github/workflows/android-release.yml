@@ -45,8 +45,17 @@ jobs:
       - name: 📥 Get dependencies
         run: flutter pub get
 
-      - name: ✅ Run tests
-        run: flutter test --coverage
+
+
+      - name: ✅ Skip tests if no test directory
+        run: |
+            if [ -d "test" ]; then
+            flutter test --coverage
+            else
+            echo "No test directory found, skipping tests"
+            exit 0
+            fi
+
 
       - name: 🔧 Make gradlew executable
         run: cd android && chmod +x ./gradlew
