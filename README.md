@@ -9,7 +9,7 @@
 
 * **📂 Dual Data Sources:**
 * **CSV Upload:** Import thousands of rows of data.
-* **Pattern Generator:** Create sequences (e.g., `Room-101` to `Room-150`) without needing a spreadsheet using the `*` wildcard system.
+* **Pattern Generator:** Create sequences (e.g., `Room-101` to `Room-150`) without needing a spreadsheet using the `*`  wildcard system.
 
 
 * **🎨 Visual Editor:**
