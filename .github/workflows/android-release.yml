@@ -1,4 +1,4 @@
-name: 🛠 Android CI / Build & Release Unsigned APK
+name: 🛠 Android CI / Build & Release APK
 
 on:
   push:
@@ -22,9 +22,6 @@ jobs:
     steps:
       - name: 📂 Checkout code
         uses: actions/checkout@v4
-        with:
-          lfs: true
-          fetch-depth: 0
 
       - name: 🚀 Cache pub deps
         uses: actions/cache@v4
@@ -51,30 +48,22 @@ jobs:
       - name: ✅ Skip tests if no test directory
         run: |
           if [ -d "test" ]; then
-            flutter test --coverage
+            flutter test
           else
             echo "No test directory found, skipping tests"
             exit 0
           fi
 
-      - name: 🔧 Verify & Fix gradlew
-        run: |
-          ls -la android/gradlew || echo "gradlew missing!"
-          cd android
-          chmod +x gradlew || echo "chmod failed"
-          ls -la gradlew
-          ./gradlew --version
+      - name: 🏗️ Build release APKs (split-per-abi)
+        run: flutter build apk --release --split-per-abi
 
-      - name: 🏗️ Build unsigned release APK
-        run: |
-          cd android
-          ./gradlew assembleRelease --no-daemon
-          ls -la app/build/outputs/apk/release/
+      - name: 📋 List generated APKs
+        run: find build/app/outputs/flutter-apk/ -name "*.apk" -ls
 
       - name: 📦 Prepare artifacts
         run: |
           mkdir -p artifacts
-          find android/app/build/outputs/apk/release/ -name "*.apk" -exec cp {} artifacts/ \;
+          cp build/app/outputs/flutter-apk/*.apk artifacts/
           ls -la artifacts/
 
       - name: 🏷️ Create or update Release
