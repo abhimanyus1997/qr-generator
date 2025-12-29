@@ -55,7 +55,7 @@ jobs:
           fi
 
       - name: 🏗️ Build release APKs (split-per-abi)
-        run: flutter build apk --release --split-per-abi --no-shrink
+        run: flutter build apk --release --split-per-abi --no-shrink --verbose
 
       - name: 📋 List generated APKs
         run: find build/app/outputs/flutter-apk/ -name "*.apk" -ls
